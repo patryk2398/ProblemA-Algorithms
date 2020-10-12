@@ -4,58 +4,58 @@ namespace ProblemA
 {
     class Program
     {                    
-        static void sortowanie(ref int[,] do_posortowania, double procent) //sortowanie przez wybieranie danego procentu tablicy    
+        static void sorting(ref int[,] to_sort, double percent) //sortowanie przez wybieranie danego percentu tablicy    
         {
             int bufor1;
             int bufor2;
-            for (int i = 0; i < do_posortowania.GetLength(0)*procent; i++)
+            for (int i = 0; i < to_sort.GetLength(0)*percent; i++)
             {
-                for (int j = i + 1; j < do_posortowania.GetLength(0); j++)
+                for (int j = i + 1; j < to_sort.GetLength(0); j++)
                 {
-                    if (do_posortowania[i, 1] >= do_posortowania[j, 1])
+                    if (to_sort[i, 1] >= to_sort[j, 1])
                     {                                                        
-                        bufor1 = do_posortowania[i, 1];
-                        bufor2 = do_posortowania[i, 0];                       
-                        do_posortowania[i, 1] = do_posortowania[j, 1];
-                        do_posortowania[i, 0] = do_posortowania[j, 0];
-                        do_posortowania[j, 1] = bufor1;
-                        do_posortowania[j, 0] = bufor2;
+                        bufor1 = to_sort[i, 1];
+                        bufor2 = to_sort[i, 0];                       
+                        to_sort[i, 1] = to_sort[j, 1];
+                        to_sort[i, 0] = to_sort[j, 0];
+                        to_sort[j, 1] = bufor1;
+                        to_sort[j, 0] = bufor2;
                     }
                 }
             }
         }
-        static int obliczanie_drogi(int[] arrayX, int[] arrayY, int[,] posortowane, double procent)
+        static int distance_calculation(int[] arrayX, int[] arrayY, int[,] sorted, double percent)
         {
             int x; //współrzędna X do której będziemy szli
             int y; //współrzędna Y do której będziemy szli
             int subx; //wynik odejmowania dla X
             int suby; //wynik odejmowania dla Y
-            int suma_X_i_Y; //zmienna przechowująca długośc drogi tylko z jednego punktu
-            int suma=0; //zmienna przechowująca obliczoną długość drogi z wielu punktów
-            int suma_min=0; //zmienna przechowująca najkrótszą do tej pory odkrytą drogę
+            int sum_of_X_and_Y; //zmienna przechowująca długośc drogi tylko z jednego punktu
+            int sum=0; //zmienna przechowująca obliczoną długość drogi z wielu punktów
+            int sum_min=0; //zmienna przechowująca najkrótszą do tej pory odkrytą drogę
 
-            for(int i=0; i<posortowane.GetLength(0)*procent; i++)
+            for(int i=0; i<sorted.GetLength(0)*percent; i++)
             {
-                x = arrayX[posortowane[i,0]];
-                y = arrayY[posortowane[i, 0]];
+                x = arrayX[sorted[i,0]];
+                y = arrayY[sorted[i, 0]];
                 for (int j=0; j<arrayY.Length; j++)
                 {
                     subx = Math.Abs(arrayX[j] - x);
                     suby = Math.Abs(arrayY[j] - y);                   
-                    suma_X_i_Y = subx + suby; //obliczenie drogi z jednego punktu do drugiego                   
-                    suma += suma_X_i_Y; //sumowanie wszystkich dotyczasowych dróg                     
+                    sum_of_X_and_Y = subx + suby; //obliczenie drogi z jednego punktu do drugiego                   
+                    sum += sum_of_X_and_Y; //sumowanie wszystkich dotyczasowych dróg                     
                     if(i==0)
                     {
-                        suma_min = suma;  //zapisanie długości drogi w pierwszym przebiegu, by w kolejnych móc porównywać 
+                        sum_min = sum;  //zapisanie długości drogi w pierwszym przebiegu, by w kolejnych móc porównywać 
                     }                                    
                 }
-               if (suma < suma_min)
+               if (sum < sum_min)
                {
-                    suma_min = suma; //sprawdzenie czy nowa długość drogi jest mniejsza, jeśli tak to podmiana 
+                    sum_min = sum; //sprawdzenie czy nowa długość drogi jest mniejsza, jeśli tak to podmiana 
                }
-               suma = 0;
+               sum = 0;
             }
-            return suma_min;
+            return sum_min;
         }
         static void Main(string[] args)
         {         
@@ -63,10 +63,10 @@ namespace ProblemA
             int avgY = 0;
             int Z; // ilość testów
             int N; // ilość punktów
-            string linia; // linia tekstu pobrana z pliku
-            char[] znak = { ' ' }; //oddzielenie współrzędnych X i Y w linii
-            long sumaX = 0;
-            long sumaY = 0;
+            string line; // linia tekstu pobrana z pliku
+            char[] sign = { ' ' }; //oddzielenie współrzędnych X i Y w linii
+            long sum_X = 0;
+            long sum_Y = 0;
 
             Z = int.Parse(Console.ReadLine());
             for (int i=0; i<Z; i++)
@@ -76,8 +76,8 @@ namespace ProblemA
                 int[] arrayY = new int[N];
                 for (int j=0; j<N; j++)
                 {
-                    linia = Console.ReadLine();
-                    string[] test2 = linia.Split(znak);
+                    line = Console.ReadLine();
+                    string[] test2 = line.Split(sign);
                     arrayX[j] = Convert.ToInt32(test2[0]);
                     arrayY[j] = Convert.ToInt32(test2[1]);
                     avgX += arrayX[j];
@@ -87,56 +87,56 @@ namespace ProblemA
                 avgX /= N;
                 avgY /= N;                                
 
-                int[,] indeksy_i_abs = new int[N,2]; // tablica zawierająca indeks współrzędnej oraz odchylenie od średniej danej współrzędnej (potrzebne do obliczenia odchylenia sandardowego)                  
+                int[,] indexes_and_abs = new int[N,2]; // tablica zawierająca indeks współrzędnej oraz odchylenie od średniej danej współrzędnej (potrzebne do obliczenia odchylenia sandardowego)                  
                 for (int j=0; j<N; j++)
                 {                 
-                    indeksy_i_abs[j, 1] = Math.Abs(avgX - arrayX[j]) + Math.Abs(avgY - arrayY[j]);
+                    indexes_and_abs[j, 1] = Math.Abs(avgX - arrayX[j]) + Math.Abs(avgY - arrayY[j]);
                 }
                 for (int j = 0; j < N; j++)
                 {
-                    indeksy_i_abs[j, 0] = j;                                        
+                    indexes_and_abs[j, 0] = j;                                        
                 }
                 for (int j = 0; j < N; j++)
                 {
-                    sumaX += (arrayX[j] - avgX) * (arrayX[j] - avgX);
-                    sumaY += (arrayY[j] - avgY) * (arrayY[j] - avgY);
+                    sum_X += (arrayX[j] - avgX) * (arrayX[j] - avgX);
+                    sum_Y += (arrayY[j] - avgY) * (arrayY[j] - avgY);
                 }
-                double kwadrat_odchylenia_od_średniej_X = sumaX / N;
-                double kwadrat_odchylenia_od_średniej_Y = sumaY / N;
-                double odchylenie_standardowe_X = Math.Sqrt(kwadrat_odchylenia_od_średniej_X);
-                double odchylenie_standardowe_Y = Math.Sqrt(kwadrat_odchylenia_od_średniej_Y);
+                double square_of_deviation_from_average_X = sum_X / N;
+                double square_of_deviation_from_average_Y = sum_Y / N;
+                double standard_deviation_X = Math.Sqrt(square_of_deviation_from_average_X);
+                double standard_deviation_Y = Math.Sqrt(square_of_deviation_from_average_Y);
 
-                if (odchylenie_standardowe_X < 5000 || odchylenie_standardowe_Y < 5000 || N <= 200 || kwadrat_odchylenia_od_średniej_X < 0 || kwadrat_odchylenia_od_średniej_Y < 0)
+                if (standard_deviation_X < 5000 || standard_deviation_Y < 5000 || N <= 200 || square_of_deviation_from_average_X < 0 || square_of_deviation_from_average_Y < 0)
                 {
-                    Console.WriteLine(obliczanie_drogi(arrayX, arrayY, indeksy_i_abs, 1));
+                    Console.WriteLine(distance_calculation(arrayX, arrayY, indexes_and_abs, 1));
                 }
-                else if (odchylenie_standardowe_X < 7000 || odchylenie_standardowe_Y < 7000 || N <= 350)
+                else if (standard_deviation_X < 7000 || standard_deviation_Y < 7000 || N <= 350)
                 {
-                    sortowanie(ref indeksy_i_abs, 0.75);
-                    Console.WriteLine(obliczanie_drogi(arrayX, arrayY, indeksy_i_abs, 0.75));
+                    sorting(ref indexes_and_abs, 0.75);
+                    Console.WriteLine(distance_calculation(arrayX, arrayY, indexes_and_abs, 0.75));
                 }
-                else if (odchylenie_standardowe_X < 9000 || odchylenie_standardowe_Y < 9000 || N <= 500)
+                else if (standard_deviation_X < 9000 || standard_deviation_Y < 9000 || N <= 500)
                 {
-                    sortowanie(ref indeksy_i_abs, 0.5);
-                    Console.WriteLine(obliczanie_drogi(arrayX, arrayY, indeksy_i_abs, 0.5));
+                    sorting(ref indexes_and_abs, 0.5);
+                    Console.WriteLine(distance_calculation(arrayX, arrayY, indexes_and_abs, 0.5));
                 }
-                else if (odchylenie_standardowe_X < 12000 || odchylenie_standardowe_Y < 12000)
+                else if (standard_deviation_X < 12000 || standard_deviation_Y < 12000)
                 {
-                    sortowanie(ref indeksy_i_abs, 0.25);
-                    Console.WriteLine(obliczanie_drogi(arrayX, arrayY, indeksy_i_abs, 0.25));
+                    sorting(ref indexes_and_abs, 0.25);
+                    Console.WriteLine(distance_calculation(arrayX, arrayY, indexes_and_abs, 0.25));
                 }
-                else if (odchylenie_standardowe_X < 15000 || odchylenie_standardowe_Y < 15000)
+                else if (standard_deviation_X < 15000 || standard_deviation_Y < 15000)
                 {
-                    sortowanie(ref indeksy_i_abs, 0.05);
-                    Console.WriteLine(obliczanie_drogi(arrayX, arrayY, indeksy_i_abs, 0.05));
+                    sorting(ref indexes_and_abs, 0.05);
+                    Console.WriteLine(distance_calculation(arrayX, arrayY, indexes_and_abs, 0.05));
                 }
                 else
                 {
-                    sortowanie(ref indeksy_i_abs, 0.01);
-                    Console.WriteLine(obliczanie_drogi(arrayX, arrayY, indeksy_i_abs, 0.01));
+                    sorting(ref indexes_and_abs, 0.01);
+                    Console.WriteLine(distance_calculation(arrayX, arrayY, indexes_and_abs, 0.01));
                 }
-                sumaX = 0;
-                sumaY = 0;
+                sum_X = 0;
+                sum_Y = 0;
                 avgX = 0;
                 avgY = 0;
             }
